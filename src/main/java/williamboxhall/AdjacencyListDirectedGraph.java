@@ -6,22 +6,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class AdjacencyListGraph implements Graph {
+public class AdjacencyListDirectedGraph implements Graph {
     private Map<String, List<String>> nodeToAdjacencyList = new HashMap<String, List<String>>();
 
     public boolean adjacent(String source, String destination) {
-        List<String> adjacencyList = nodeToAdjacencyList.get(source);
-        return adjacencyList != null && adjacencyList.contains(destination);
+        return adjacencyListFor(source).contains(destination);
     }
 
     public void add(String source, String destination) {
-        nodeToAdjacencyList.put(source, listContaining(destination));
+        adjacencyListFor(source).add(destination);
     }
 
-    private List<String> listContaining(String destination) {
-        List<String> list = new ArrayList<String>();
-        list.add(destination);
-        return list;
+    private List<String> adjacencyListFor(String source) {
+        if (!nodeToAdjacencyList.containsKey(source)) {
+            nodeToAdjacencyList.put(source, new ArrayList<String>());
+        }
+        return nodeToAdjacencyList.get(source);
     }
 
     public void delete(String source, String destination) {
