@@ -109,6 +109,11 @@ public class AdjacencyListDirectedGraphTest {
         assertThat(complexUndirectedGraph().breadthFirstTraversalFrom("a").toString(), is("[a, b, c, f, d, e, h, g, j, i]"));
     }
 
+     @Test
+    public void allowsDepthFirstTraversal() {
+        assertThat(complexUndirectedGraph().depthFirstTraversalFrom("a").toString(), is("[a, b, d, c, h, f, g, e, j, i]"));
+    }
+
     private Graph complexUndirectedGraph() {
         Graph graph = new AdjacencyListDirectedGraph();
         bidirectionallyAssociate(graph, "a", "b");

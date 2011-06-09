@@ -12,4 +12,6 @@ public interface Graph {
     List<String> neighbors(String source);
 
     List<String> breadthFirstTraversalFrom(String source);
+
+    List<String> depthFirstTraversalFrom(String a);
 }

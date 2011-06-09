@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 public class AdjacencyListDirectedGraph implements Graph {
     private Map<String, Set<String>> nodeToAdjacencyList = new HashMap<String, Set<String>>();
@@ -35,6 +36,10 @@ public class AdjacencyListDirectedGraph implements Graph {
         return new BreadthFirstTraversal().from(source);
     }
 
+    public List<String> depthFirstTraversalFrom(String source) {
+        return new DepthFirstTraversal().from(source);
+    }
+
     private Set<String> adjacencyListFor(String source) {
         if (!nodeToAdjacencyList.containsKey(source)) {
             nodeToAdjacencyList.put(source, new HashSet<String>());
@@ -44,7 +49,6 @@ public class AdjacencyListDirectedGraph implements Graph {
 
     private class BreadthFirstTraversal {
         private Queue<String> queue;
-        private Set<String> visited;
         private List<String> traversal;
 
         private List<String> from(String source) {
@@ -63,21 +67,58 @@ public class AdjacencyListDirectedGraph implements Graph {
         private void processNextItemInQueue() {
             String node = queue.remove();
             for (String neighbor : neighbors(node)) {
-                if (!visited.contains(neighbor)) {
+                if (!traversal.contains(neighbor)) {
                     visit(neighbor);
                 }
             }
         }
 
-        private void visit(String neighbor) {
-            visited.add(neighbor);
-            queue.add(neighbor);
-            traversal.add(neighbor);
+        private void visit(String node) {
+            queue.add(node);
+            traversal.add(node);
         }
 
         private void resetCollections() {
             queue = new LinkedList<String>();
-            visited = new HashSet<String>();
+            traversal = new ArrayList<String>();
+        }
+    }
+
+    private class DepthFirstTraversal {
+        private Stack<String> stack;
+        private List<String> traversal;
+
+        public List<String> from(String source) {
+            resetCollections();
+            visit(source);
+            while (stackHasItemsToProcess()) {
+                processNextItemInStack();
+            }
+            return traversal;
+        }
+
+        private boolean stackHasItemsToProcess() {
+            return !stack.isEmpty();
+        }
+
+        private void processNextItemInStack() {
+            String node = stack.peek();
+            for (String neighbor : neighbors(node)) {
+                if (!traversal.contains(neighbor)) {
+                    visit(neighbor);
+                    return;
+                }
+            }
+            stack.pop();
+        }
+
+        private void visit(String node) {
+            stack.push(node);
+            traversal.add(node);
+        }
+
+        private void resetCollections() {
+            stack = new Stack<String>();
             traversal = new ArrayList<String>();
         }
     }
