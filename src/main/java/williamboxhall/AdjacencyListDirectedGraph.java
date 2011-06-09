@@ -24,6 +24,7 @@ public class AdjacencyListDirectedGraph implements Graph {
     }
 
     public void delete(String source, String destination) {
+        nodeToAdjacencyList.get(source).remove(destination);
     }
 
     public Set<String> neighbors(String source) {

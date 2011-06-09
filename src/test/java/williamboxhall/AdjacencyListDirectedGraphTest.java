@@ -60,4 +60,25 @@ public class AdjacencyListDirectedGraphTest {
         assertThat(graph.adjacent("x", "y"), is(true));
         assertThat(graph.adjacent("x", "z"), is(true));
     }
+    
+    @Test
+    public void removesAnEdgeBetweenTwoNodes() {
+        Graph graph = new AdjacencyListDirectedGraph();
+        assertThat(graph.adjacent("x", "y"), is(false));
+
+        graph.add("x", "y");
+        assertThat(graph.adjacent("x", "y"), is(true));
+
+        graph.delete("x", "y");
+        assertThat(graph.adjacent("x", "y"), is(false));
+    }
+    
+    @Test
+    public void removeDoesNothingWhenEdgeDoesNotExistBeforeRemoval() {
+        Graph graph = new AdjacencyListDirectedGraph();
+        assertThat(graph.adjacent("x", "y"), is(false));
+
+        graph.delete("x", "y");
+        assertThat(graph.adjacent("x", "y"), is(false));
+    }
 }
