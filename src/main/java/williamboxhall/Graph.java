@@ -1,6 +1,6 @@
 package williamboxhall;
 
-import java.util.Set;
+import java.util.List;
 
 public interface Graph {
     boolean adjacent(String source, String destination);
@@ -9,5 +9,7 @@ public interface Graph {
 
     void delete(String source, String destination);
 
-    Set<String> neighbors(String source);
+    List<String> neighbors(String source);
+
+    List<String> breadthFirstTraversalFrom(String source);
 }

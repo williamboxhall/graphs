@@ -1,8 +1,13 @@
 package williamboxhall;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 public class AdjacencyListDirectedGraph implements Graph {
@@ -20,8 +25,14 @@ public class AdjacencyListDirectedGraph implements Graph {
         adjacencyListFor(source).remove(destination);
     }
 
-    public Set<String> neighbors(String source) {
-        return adjacencyListFor(source);
+    public List<String> neighbors(String source) {
+        List<String> neighbors = new ArrayList<String>(adjacencyListFor(source));
+        Collections.sort(neighbors);
+        return neighbors;
+    }
+
+    public List<String> breadthFirstTraversalFrom(String source) {
+        return new BreadthFirstTraversal().from(source);
     }
 
     private Set<String> adjacencyListFor(String source) {
@@ -29,5 +40,45 @@ public class AdjacencyListDirectedGraph implements Graph {
             nodeToAdjacencyList.put(source, new HashSet<String>());
         }
         return nodeToAdjacencyList.get(source);
+    }
+
+    private class BreadthFirstTraversal {
+        private Queue<String> queue;
+        private Set<String> visited;
+        private List<String> traversal;
+
+        private List<String> from(String source) {
+            resetCollections();
+            visit(source);
+            while (queueHasItemsToProcess()) {
+                processNextItemInQueue();
+            }
+            return traversal;
+        }
+
+        private boolean queueHasItemsToProcess() {
+            return !queue.isEmpty();
+        }
+
+        private void processNextItemInQueue() {
+            String node = queue.remove();
+            for (String neighbor : neighbors(node)) {
+                if (!visited.contains(neighbor)) {
+                    visit(neighbor);
+                }
+            }
+        }
+
+        private void visit(String neighbor) {
+            visited.add(neighbor);
+            queue.add(neighbor);
+            traversal.add(neighbor);
+        }
+
+        private void resetCollections() {
+            queue = new LinkedList<String>();
+            visited = new HashSet<String>();
+            traversal = new ArrayList<String>();
+        }
     }
 }

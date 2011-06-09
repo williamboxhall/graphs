@@ -103,4 +103,34 @@ public class AdjacencyListDirectedGraphTest {
         assertThat(graph.neighbors("x").size(), is(0));
         assertThat(graph.neighbors("x").contains("y"), is(false));
     }
+
+    @Test
+    public void allowsBreadthFirstTraversal() {
+        assertThat(complexUndirectedGraph().breadthFirstTraversalFrom("a").toString(), is("[a, b, c, f, d, e, h, g, j, i]"));
+    }
+
+    private Graph complexUndirectedGraph() {
+        Graph graph = new AdjacencyListDirectedGraph();
+        bidirectionallyAssociate(graph, "a", "b");
+        bidirectionallyAssociate(graph, "a", "c");
+        bidirectionallyAssociate(graph, "a", "f");
+        bidirectionallyAssociate(graph, "b", "d");
+        bidirectionallyAssociate(graph, "b", "e");
+        bidirectionallyAssociate(graph, "c", "d");
+        bidirectionallyAssociate(graph, "c", "h");
+        bidirectionallyAssociate(graph, "e", "d");
+        bidirectionallyAssociate(graph, "e", "g");
+        bidirectionallyAssociate(graph, "e", "j");
+        bidirectionallyAssociate(graph, "f", "h");
+        bidirectionallyAssociate(graph, "h", "d");
+        bidirectionallyAssociate(graph, "h", "g");
+        bidirectionallyAssociate(graph, "g", "i");
+        bidirectionallyAssociate(graph, "i", "j");
+        return graph;
+    }
+
+    private void bidirectionallyAssociate(Graph graph, String source, String destination) {
+        graph.add(source, destination);
+        graph.add(destination, source);
+    }
 }
