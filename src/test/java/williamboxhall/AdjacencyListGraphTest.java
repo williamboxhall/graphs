@@ -13,4 +13,24 @@ public class AdjacencyListGraphTest {
     public void isAGraph() {
         assertThat(Graph.class.isAssignableFrom(AdjacencyListGraph.class), is(true));
     }
+
+    @Test
+    public void addsAnEdgeBetweenTwoNodes() {
+        Graph graph = new AdjacencyListGraph();
+        assertThat(graph.adjacent("x", "y"), is(false));
+
+        graph.add("x", "y");
+        assertThat(graph.adjacent("x", "y"), is(true));
+    }
+
+    @Test
+    public void canAddAnEdgeToNodesThatAlreadyHaveAnEdge() {
+        Graph graph = new AdjacencyListGraph();
+
+        graph.add("x", "y");
+        assertThat(graph.adjacent("x", "y"), is(true));
+
+        graph.add("x", "y");
+        assertThat(graph.adjacent("x", "y"), is(true));
+    }
 }
