@@ -60,7 +60,7 @@ public class AdjacencyListDirectedGraphTest {
         assertThat(graph.adjacent("x", "y"), is(true));
         assertThat(graph.adjacent("x", "z"), is(true));
     }
-    
+
     @Test
     public void removesAnEdgeBetweenTwoNodes() {
         Graph graph = new AdjacencyListDirectedGraph();
@@ -72,13 +72,35 @@ public class AdjacencyListDirectedGraphTest {
         graph.delete("x", "y");
         assertThat(graph.adjacent("x", "y"), is(false));
     }
-    
+
     @Test
     public void removeDoesNothingWhenEdgeDoesNotExistBeforeRemoval() {
         Graph graph = new AdjacencyListDirectedGraph();
-        assertThat(graph.adjacent("x", "y"), is(false));
-
         graph.delete("x", "y");
         assertThat(graph.adjacent("x", "y"), is(false));
+    }
+
+    @Test
+    public void canListNeighborsForANode() {
+        Graph graph = new AdjacencyListDirectedGraph();
+        graph.add("x", "y");
+        graph.add("x", "z");
+
+        assertThat(graph.neighbors("x").size(), is(2));
+        assertThat(graph.neighbors("x").contains("y"), is(true));
+        assertThat(graph.neighbors("x").contains("z"), is(true));
+    }
+
+    @Test
+    public void listsNothingForNodeWithNoNeighbors() {
+        Graph graph = new AdjacencyListDirectedGraph();
+
+        assertThat(graph.neighbors("x").size(), is(0));
+        assertThat(graph.neighbors("x").contains("y"), is(false));
+
+        graph.add("x", "y");
+        graph.delete("x", "y");
+        assertThat(graph.neighbors("x").size(), is(0));
+        assertThat(graph.neighbors("x").contains("y"), is(false));
     }
 }

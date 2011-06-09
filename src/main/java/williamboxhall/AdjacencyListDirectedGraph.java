@@ -16,18 +16,18 @@ public class AdjacencyListDirectedGraph implements Graph {
         adjacencyListFor(source).add(destination);
     }
 
+    public void delete(String source, String destination) {
+        adjacencyListFor(source).remove(destination);
+    }
+
+    public Set<String> neighbors(String source) {
+        return adjacencyListFor(source);
+    }
+
     private Set<String> adjacencyListFor(String source) {
         if (!nodeToAdjacencyList.containsKey(source)) {
             nodeToAdjacencyList.put(source, new HashSet<String>());
         }
         return nodeToAdjacencyList.get(source);
-    }
-
-    public void delete(String source, String destination) {
-        nodeToAdjacencyList.get(source).remove(destination);
-    }
-
-    public Set<String> neighbors(String source) {
-        return null;
     }
 }
